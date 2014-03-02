@@ -1,7 +1,6 @@
 <?php
 
 	namespace Core;
-
 	use \Core\TwigCore;
 
 	class Core

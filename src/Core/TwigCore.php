@@ -12,6 +12,7 @@
 		public static function factorize()
 		{
 			self::$loader 	= new \Twig_Loader_Filesystem(base_path().'/views');
-			self::$twig 	= new \Twig_Environment($loader, Core::config('twig'));
+			self::$twig 	= new \Twig_Environment(self::$loader, Core::config('twig'));
+			return $twig;
 		}
 	}
