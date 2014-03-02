@@ -14,8 +14,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Core" : "src",
-            "View" : "src"
+            "Core\\" : "src",
+            "View\\" : "src"
         }
     }
 }
