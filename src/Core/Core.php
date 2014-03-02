@@ -1,24 +1,35 @@
 <?php
 
 	namespace Core;
-	use Options\Page as OptionsPage;
+
+	use \Core\TwigCore;
 
 	class Core
 	{
 		private static $instance = null;
+		private $config = array();
 
-		public static function make()
+		public static function make($config = array())
 		{	
 			self::$instance = new Core;
+			self::$instance->config = $config;
+
 			return self::$instance;	
 		}
 
 		public function load()
 		{
 			add_action('init',	array($this, 'init'));
+			return $this;
 		}
 		public function init()
 		{
-			OptionsPage::make()->load();
+			TwigCore::factorize();
+			return $this;
+		}
+
+		public static function config($config_key)
+		{
+			return self::$instance->config[$config_key];
 		}
 	}
