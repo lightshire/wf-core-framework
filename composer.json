@@ -1,0 +1,21 @@
+{
+    "name": "sourcescript/wf-core-framework",
+    "description": "The Core Framework for the Wordpress Factory Plugin",
+    "authors": [
+        {
+            "name": "Sourcescript",
+            "email": "giansantillan18@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "twig/twig": "1.*",
+        "symfony/symfony": "2.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\" : "src",
+            "View\\" : "src"
+        }
+    }
+}
