@@ -24,7 +24,6 @@
 		public function init()
 		{
 			TwigCore::factorize();
-			DoctrineCore::factorize();
 			return $this;
 		}
 
