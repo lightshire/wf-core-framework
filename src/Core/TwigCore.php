@@ -13,6 +13,6 @@
 		{
 			self::$loader 	= new \Twig_Loader_Filesystem(base_path().'/views');
 			self::$twig 	= new \Twig_Environment(self::$loader, Core::config('twig'));
-			return $twig;
+			return self::$twig;
 		}
 	}
