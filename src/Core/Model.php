@@ -10,20 +10,20 @@
 		 * A public instance of the object
 		 * @var Model
 		 */
-		public $query = null;
+		protected $query = null;
 
 		/**
 		 * The where query generator for the chaining method
 		 * 
 		 * @var array
 		 */
-		public $whereQuery = array();
+		protected $whereQuery = array();
 
 		/**
 		 * The Model column attributes
 		 * @var array
 		 */
-		public $attributes = array();
+		protected $attributes = array();
 
 		/**
 		 * Kaylangan ko pa ba sabihin ano to?
@@ -45,8 +45,8 @@
 		 */
 		public static function make(array $args = array())
 		{
-	
-			return new self($args);		
+			$class = get_called_class();
+			return new $class($args);		
 
 		}
 
@@ -143,45 +143,48 @@
 
 			$row  =  $wpdb->get_row($query, ARRAY_A);
 
-			return new self($row);
+			return new $class($row);
 		}
 
 		public function get()
 		{
 			$models = array();
-			
-			global $wpdb;
 			$class = get_class($this);
+
+			global $wpdb;
 
 			$table = self::getTableName();
 
 			$query =  "select * from {$table} ".$this->generateWhere();
+			$query = rtrim($query, "where ");
 
 			$results = $wpdb->get_results($query, ARRAY_A);
 
 
 			foreach($results as $result) {
-				$models[] = new self($result);
+
+				$models[] = new $class($result);
 			}
 
 			return $models;
 		}
 
-		public function generateWhere()
+		protected function generateWhere()
 		{
 			$whereQuery = "";
 			foreach($this->whereQuery as $query)
 			{
-				$whereQuery .= $query["merge"];
+				$whereQuery .= " ".$query["merge"];
 
-				$whereQuery .= $query['query'];
+				$whereQuery .= " ".$query['query'];
 
 
 			}
 
-			$whereQuery = ltrim($whereQuery, "OR");
-			$whereQuery = ltrim($whereQuery, "AND");
+			$whereQuery = ltrim($whereQuery, " OR");
+			$whereQuery = ltrim($whereQuery, " AND");
 
+		
 			$whereQuery = "where ".$whereQuery;
 			return $whereQuery;
 		}
@@ -241,8 +244,7 @@
 			$className = get_called_class();
 
 			$query = "select * from {$table} where id = {$id}";
-
-
+		
 			$result = $wpdb->get_row($query, ARRAY_A);
 
 			if(!is_array($result)) {
