@@ -60,7 +60,7 @@
 
 		public function where($attr, $value, $selector = "=")
 		{
-			$where = "{$attr} = '".mysql_real_escape_string($value)."'";
+			$where = "{$attr} {$selector} '".mysql_real_escape_string($value)."'";
 			$this->whereQuery[] = array(
 					'query' 	=> $where,
 					'selector' 	=> $selector,
@@ -72,7 +72,7 @@
 
 		public function orWhere($attr, $value, $selector = "=")
 		{
-			$where = "{$attr} = '".mysql_real_escape_string($value)."'";
+			$where = "{$attr} {$selector} '".mysql_real_escape_string($value)."'";
 
 			$this->whereQuery[] = array(
 					'query' 	=> $where,
@@ -129,6 +129,61 @@
 				);
 
 			return $this;
+		}
+
+		public function first()
+		{
+			global $wpdb;
+
+			$class = get_class($this);
+
+			$table = self::getTableName();
+
+			$query =  "select * from {$table} ".$this->generateWhere()." limit 1";
+
+			$row  =  $wpdb->get_row($query, ARRAY_A);
+
+			return new self($row);
+		}
+
+		public function get()
+		{
+			$models = array();
+			
+			global $wpdb;
+			$class = get_class($this);
+
+			$table = self::getTableName();
+
+			$query =  "select * from {$table} ".$this->generateWhere();
+
+			$results = $wpdb->get_results($query, ARRAY_A);
+
+
+			foreach($results as $result) {
+				$models[] = new self($result);
+			}
+
+			return $models;
+		}
+
+		private function generateWhere()
+		{
+			$whereQuery = "";
+			foreach($this->whereQuery as $query)
+			{
+				$whereQuery .= $query["merge"];
+
+				$whereQuery .= $query['query'];
+
+
+			}
+
+			$whereQuery = ltrim($whereQuery, "OR");
+			$whereQuery = ltrim($whereQuery, "AND");
+
+			$whereQuery = "where ".$whereQuery;
+			return $whereQuery;
 		}
 
 		// public function where
