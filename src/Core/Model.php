@@ -106,7 +106,12 @@
 
 			$query = "select * from {$table} where id = {$id}";
 
+
 			$result = $wpdb->get_row($query, ARRAY_A);
+
+			if(!is_array($result)) {
+				return null;
+			}
 
 			return new $className($result);
 
