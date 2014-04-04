@@ -11,7 +11,13 @@
 		 * @var Model
 		 */
 		private $query = null;
-		
+
+		/**
+		 * The where query generator for the chaining method
+		 * 
+		 * @var array
+		 */
+		private $whereQuery = array();
 
 		/**
 		 * The Model column attributes
@@ -51,6 +57,81 @@
 		 * -------------------/
 		 */
 
+
+		public function where($attr, $value, $selector = "=")
+		{
+			$where = "{$attr} = '".mysql_real_escape_string($value)."'";
+			$this->whereQuery[] = array(
+					'query' 	=> $where,
+					'selector' 	=> $selector,
+					'merge' 	=> 'AND'
+				);
+
+			return $this;
+		}
+
+		public function orWhere($attr, $value, $selector = "=")
+		{
+			$where = "{$attr} = '".mysql_real_escape_string($value)."'";
+
+			$this->whereQuery[] = array(
+					'query' 	=> $where,
+					'selector' 	=> $selector,
+					'merge' 	=> 'OR'
+				);
+
+			return $this;
+		}
+
+		public function whereRaw($details)
+		{
+			$this->whereQuery[] = array(
+					'query' 	=> $details,
+					'selector' 	=> null,
+					'merge' 	=> 'AND'				
+				);
+
+			return $this;
+		}
+
+		public function oRwhereRaw($details)
+		{
+			$this->whereQuery[] = array(
+					'query' 	=> $details,
+					'selector' 	=> null,
+					'merge' 	=> 'OR' 
+				);
+
+			return $this;
+		}
+
+		public function whereBetween($attr, $firstValue, $secondValue)
+		{
+			$query = "{$attr} between {$firstValue} and {$secondValue}";
+
+			$this->whereQuery[] = array(
+					'query' 	=> $query,
+					'selector'	=> null,
+					'merge' 	=> 'AND'
+				);
+
+			return $this;
+		}
+
+		public function orWhereBetween($attr, $firstValue, $secondValue)
+		{
+			$query = "{$attr} between {$firstValue} and {$secondValue}";
+
+			$this->whereQuery[] = array(
+					'query' 	=> $query,
+					'selector' 	=> null,
+					'merge' 	=> 'OR'
+				);
+
+			return $this;
+		}
+
+		// public function where
 
 		public function save()
 		{
