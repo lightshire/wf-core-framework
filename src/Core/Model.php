@@ -7,23 +7,23 @@
 	class Model
 	{
 		/**
-		 * A Private instance of the object
+		 * A protected instance of the object
 		 * @var Model
 		 */
-		private $query = null;
+		protected $query = null;
 
 		/**
 		 * The where query generator for the chaining method
 		 * 
 		 * @var array
 		 */
-		private $whereQuery = array();
+		protected $whereQuery = array();
 
 		/**
 		 * The Model column attributes
 		 * @var array
 		 */
-		private $attributes = array();
+		protected $attributes = array();
 
 		/**
 		 * Kaylangan ko pa ba sabihin ano to?
@@ -43,7 +43,7 @@
 		 * arguments given and created for WP_Query
 		 * @return Model     
 		 */
-		private static function make(array $args = array())
+		protected static function make(array $args = array())
 		{
 	
 			return new self($args);		
@@ -167,7 +167,7 @@
 			return $models;
 		}
 
-		private function generateWhere()
+		protected function generateWhere()
 		{
 			$whereQuery = "";
 			foreach($this->whereQuery as $query)
