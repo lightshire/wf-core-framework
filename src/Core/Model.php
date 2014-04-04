@@ -62,7 +62,7 @@
 			if(!$this->attrIsset("id")) {
 				$this->id = $wpdb->insert($table, $data);
 			}else {
-				$wpdb->update($table, $data, array('id' => $this->id);
+				$wpdb->update($table, $data, array('id' => $this->id));
 			}
 
 			return $this;
