@@ -131,7 +131,7 @@
 			$table = self::pluralize($table);
 			$table = $wpdb->prefix.$table;
 
-			return $table;
+			return strtolower($table);
 		}
 
 
