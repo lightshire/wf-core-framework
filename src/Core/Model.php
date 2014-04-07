@@ -159,7 +159,7 @@
 			$query = rtrim($query, "where ");
 
 			$results = $wpdb->get_results($query, ARRAY_A);
-
+			// dd($query);
 
 			foreach($results as $result) {
 
@@ -363,6 +363,11 @@
 		public function __set($attr, $val)
 		{
 			$this->attributes[$attr] = $val;
+		}
+
+		public function __isset($attr)
+		{
+			return array_key_exists($attr, $this->attributes);
 		}
 
 		public function attrIsset($attr)
