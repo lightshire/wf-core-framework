@@ -16,7 +16,7 @@
 
 
 			//loading functions
-			self::$twig->addFunction('sanitized_current_url', new Twig_Function_Function('file_import'));
+			self::$twig->addFunction('sanitized_current_url', new \Twig_Function_Function('file_import'));
 
 			return self::$twig;
 		}
