@@ -13,6 +13,11 @@
 		{
 			self::$loader 	= new \Twig_Loader_Filesystem(base_path().'/views');
 			self::$twig 	= new \Twig_Environment(self::$loader, Core::config('twig'));
+
+
+			//loading functions
+			self::$twig->addFunction('sanitized_current_url', new Twig_Function_Function('file_import'));
+
 			return self::$twig;
 		}
 	}
