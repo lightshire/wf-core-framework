@@ -25,6 +25,6 @@
 		 * post - a required function that catched all posts done by the functions
 		 */
 
-		public static function page();
+		public static function post();
 
 	}
