@@ -164,27 +164,31 @@
 			$className 	= get_called_class();
 			$models 	= array();
 			$class 		= get_class($this);
+			$count 		= 0;
 
 			$page = isset($_GET[$page_identifier]) ? $_GET[$page_identifier] : 1;
 
 			$offset = ($page-1)*$per_page;
 
-
 			$query = "select * from {$table} ".$this->generateWhere();
+			$countQuery = "select count(id) from {$table} ".$this->generateWhere();
 
 			$query = rtrim($query, "where ");
-
+			$countQuery = rtrim($countQuery, "where ");
+			
 			$query .= " limit {$per_page} offset {$offset}";
 
 			// dd($query);
 
 			$results = $wpdb->get_results($query, ARRAY_A);
+			$count 	 = $wpdb->get_var($countQuery, 0, 0);
 
 			foreach($results as $result) {
 				$models[] = new $class($result);
 			}
+			
 
-			return Pagination::make($models, $page, $per_page, $page_identifier);
+			return Pagination::make($models, $page, ceil($count / $per_page), $page_identifier);
 		}
 
 		public function get()
@@ -315,6 +319,8 @@
 
 			return strtolower($table);
 		}
+
+		
 
 
 		/**

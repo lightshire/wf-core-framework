@@ -35,8 +35,12 @@
 					'type' 		=> 'array'
 				));
 			
+
 			$content = "";
 
+			if($paginate == null) {
+				return $content;
+			}
 			$content = "<ul class='pagination'>";
 
 			foreach($paginate as $p) {
