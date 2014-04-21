@@ -27,4 +27,9 @@
 			$_SESSION[$key] = $value;
 		}
 		
+		public static function flush($key)
+		{
+			Session::start();
+			unset($_SESSION[$key]);
+		}
 	}

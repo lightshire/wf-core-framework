@@ -212,7 +212,7 @@
 			}else {
 				$wpdb->update($table, $data, array('id' => $this->id));
 			}
-
+			// dd($wpdb);
 			return $this;
 		}
 
@@ -388,20 +388,20 @@
 		public function validate(array $input)
 		{
 			$defaults = $this->defaults;
+			
 			return $defaults == array_keys($input);
 		}
 
 		public function validateAndSave(array $input)
 		{
+			
 			if($this->validate($input)) {
 
 				$this->attributes = $input;
 				return $this->save();
 
 			}else {
-
 				return false;
-
 			}
 		}
 
