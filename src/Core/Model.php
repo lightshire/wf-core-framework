@@ -19,6 +19,15 @@
 		 */
 		protected $whereQuery = array();
 
+
+		/**
+		* The default attributes to match specific 
+		* value requests
+		* @var array
+		*/
+
+		protected $defaults = array();
+
 		/**
 		 * The Model column attributes
 		 * @var array
@@ -373,6 +382,27 @@
 		public function attrIsset($attr)
 		{
 			return array_key_exists($attr, $this->attributes);
+		}
+
+
+		public function validate(array $input)
+		{
+			$defaults = $this->defaults;
+			return $defaults == array_keys($input);
+		}
+
+		public function validateAndSave(array $input)
+		{
+			if($this->validate($input)) {
+
+				$this->attributes = $input;
+				return $this->save();
+
+			}else {
+
+				return false;
+
+			}
 		}
 
 
