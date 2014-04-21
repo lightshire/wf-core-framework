@@ -3,7 +3,7 @@
 	use \Core\TwigCore;
 	use \Core\DoctrineCore;
 	use \Core;
-
+	use \Core\Pagination;
 	class Model
 	{
 		/**
@@ -155,6 +155,38 @@
 			return new $class($row);
 		}
 
+
+		public function paginate($per_page = 10, $page_identifier = "page_id")
+		{
+			global $wpdb;
+
+			$table 		= self::getTableName();
+			$className 	= get_called_class();
+			$models 	= array();
+			$class 		= get_class($this);
+
+			$page = isset($_GET[$page_identifier]) ? $_GET[$page_identifier] : 1;
+
+			$offset = ($page-1)*$per_page;
+
+
+			$query = "select * from {$table} ".$this->generateWhere();
+
+			$query = rtrim($query, "where ");
+
+			$query .= " limit {$per_page} offset {$offset}";
+
+			// dd($query);
+
+			$results = $wpdb->get_results($query, ARRAY_A);
+
+			foreach($results as $result) {
+				$models[] = new $class($result);
+			}
+
+			return Pagination::make($models, $page, $per_page, $page_identifier);
+		}
+
 		public function get()
 		{
 			$models = array();
@@ -217,6 +249,8 @@
 		}
 
 
+
+
 		/**
 		 * Get all the models
 		 * @return array
@@ -238,6 +272,7 @@
 
 			return $results;
 		}
+
 
 
 		/**
@@ -404,6 +439,8 @@
 				return false;
 			}
 		}
+
+		
 
 
 

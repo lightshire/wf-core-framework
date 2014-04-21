@@ -3,6 +3,8 @@
 	namespace Core;
 	use \Core\TwigCore;
 	use \Core\DoctrineCore;
+
+	
 	class Core
 	{	
 		/**
