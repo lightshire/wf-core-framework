@@ -291,8 +291,8 @@
 			$table = self::getTableName();
 			$className = get_called_class();
 
-			$query = "select * from {$table} where id = {$id}";
-		
+			$query = "select * from {$table} where id = {$id} limit 1";
+			
 			$result = $wpdb->get_row($query, ARRAY_A);
 
 			if(!is_array($result)) {
@@ -429,8 +429,13 @@
 		public function validate(array $input)
 		{
 			$defaults = $this->defaults;
-			
-			return $defaults == array_keys($input);
+			foreach($defaults as $default) {
+				if(!isset($input[$default]) || $input[$default] == "") {
+					return false;
+				}
+			}
+			// return $defaults == array_keys($input);
+			return true;
 		}
 
 		public function validateAndSave(array $input)
