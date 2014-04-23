@@ -2,7 +2,6 @@
 	namespace Core;
 	use \Core\TwigCore;
 	use \Core\DoctrineCore;
-	use \Core;
 	use \Core\Pagination;
 	class Model
 	{
@@ -151,8 +150,11 @@
 			$query =  "select * from {$table} ".$this->generateWhere()." limit 1";
 
 			$row  =  $wpdb->get_row($query, ARRAY_A);
-
-			return new $class($row);
+			if(is_array($row)) {
+				return new $class($row);
+			}else {
+				return null;
+			}
 		}
 
 
@@ -250,6 +252,19 @@
 			}
 			// dd($wpdb);
 			return $this;
+		}
+
+		public function destroy()
+		{
+			global $wpdb;
+
+			$table 	= self::getTableName();
+			$data 	= $this->attributes;
+
+			$wpdb->delete($table, array('id'=>$data->id));
+			unset($this->attributes, 'id');
+			
+			return $this;	
 		}
 
 
