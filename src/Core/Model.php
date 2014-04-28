@@ -150,11 +150,19 @@
 			$query =  "select * from {$table} ".$this->generateWhere()." limit 1";
 
 			$row  =  $wpdb->get_row($query, ARRAY_A);
+
+
+			$this->query = $query;
 			if(is_array($row)) {
 				return new $class($row);
 			}else {
 				return null;
 			}
+		}
+
+		public function getQuery()
+		{
+			return $this->query;
 		}
 
 
@@ -189,7 +197,8 @@
 				$models[] = new $class($result);
 			}
 			
-
+			$this->query = $query;
+			// dd($query);
 			return Pagination::make($models, $page, ceil($count / $per_page), $page_identifier);
 		}
 
@@ -212,6 +221,8 @@
 
 				$models[] = new $class($result);
 			}
+
+			$this->query = $query;
 
 			return $models;
 		}
@@ -246,11 +257,15 @@
 			$data  = $this->attributes;
 
 			if(!$this->attrIsset("id")) {
-				$this->id = $wpdb->insert($table, $data);
+				$wpdb->insert($table, $data);
+				$this->id = $wpdb->insert_id;
+				// dd($this->id);
 			}else {
 				$wpdb->update($table, $data, array('id' => $this->id));
 			}
 			// dd($wpdb);
+			// 
+			
 			return $this;
 		}
 

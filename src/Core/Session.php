@@ -18,12 +18,20 @@
 		public static function get($key)
 		{
 			Session::start();
-			return $_SESSION[$key];
+			
+			if($value = $_SESSION[$key]) {
+				return $value;
+			}else {
+				global $$key;
+				return $$key;
+			}
 		}
 
 		public static function set($key, $value)
 		{
 			Session::start();
+			global $$key;
+			$$key = $value;
 			$_SESSION[$key] = $value;
 		}
 		
