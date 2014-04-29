@@ -17,7 +17,8 @@
             "Core\\" : "src",
             "View\\" : "src",
             "Assets\\": "src",
-            "Mail\\": "src"
+            "Mail\\": "src",
+            "Mail\\Mail": "src"
         }
     }
 }

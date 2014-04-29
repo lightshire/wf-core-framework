@@ -5,28 +5,21 @@
 	{
 
 		private static $instance = null;
-		private $args 	= array();
+		private static $args 	= array();
 
 
-		public function __construct($args = array(
-				'is_smtp' 	=> false,
-				'host' 		=> 'smtp.gmail.com',
-				'smtp_auth' => true,
-				'port' 		=> 465,
-				'username' 	=> '',
-				'password' 	=> '',
-				'smtp_secure' => 'ssl',
-				'from' 		=> 'admin@site.com',
-				'from_name' => 'sourcescript'
-			))
+		public function __construct($args = array())
 		{
-			$this->args = $args;
+			self::$args = $args;
+
 		}
 
 
 
-		public static function factorize($args = array())
+		public static function factorize()
 		{
+			$args = \Core\Config::get("mail");
+
 			$mail = new Mail($args);
 			return $mail;
 		}
@@ -37,20 +30,22 @@
 			return $this;
 		}
 
-		public function mailer(PHPMailer $phpmailer)
+		public function mailer(\PHPMailer $phpmailer)
 		{
-			if($args['is_smtp']) {
+			if(self::$args['is_smtp']) {
 				$phpmailer->isSMTP();
 			}
 
-			$phpmailer->Host 		= $args['host'];
-			$phpmailer->SMTPAuth 	= $args['smtp_auth'];
-			$phpmailer->Port 		= $args['port'];
-			$phpmailer->Username 	= $args['username'];
-		    $phpmailer->Password 	= $args['password'];
-		    $phpmailer->SMTPSecure 	= $args['smtp_secure'];
-		    $phpmailer->From 		= $args['from'];
-		    $phpmailer->FromName 	= $args['from_name'];
+			$phpmailer->Host 		= self::$args['host'];
+			$phpmailer->SMTPAuth 	= self::$args['smtp_auth'];
+			$phpmailer->Port 		= self::$args['port'];
+			$phpmailer->Username 	= self::$args['username'];
+		    $phpmailer->Password 	= self::$args['password'];
+		    $phpmailer->SMTPSecure 	= self::$args['smtp_secure'];
+		    $phpmailer->From 		= self::$args['from'];
+		    $phpmailer->FromName 	= self::$args['from_name'];
+
+		  
 		    return $this;
 		}
 
