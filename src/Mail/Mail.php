@@ -27,7 +27,13 @@
 		public function load()
 		{
 			add_action('phpmailer_init', array($this, 'mailer'));
+			add_filter('wp_mail_content_type', array($this, 'mailContentType'));
 			return $this;
+		}
+
+		public function mailContentType()
+		{
+			return "text/html";	
 		}
 
 		public function mailer(\PHPMailer $phpmailer)
