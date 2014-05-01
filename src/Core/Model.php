@@ -276,7 +276,8 @@
 			$table 	= self::getTableName();
 			$data 	= $this->attributes;
 
-			$wpdb->delete($table, array('id'=>$data->id));
+			$wpdb->delete($table, array('id'=>$data['id']));
+			
 			unset($this->attributes['id']);
 			
 			return $this;	
